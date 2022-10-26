@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class AppController {
   @Get('healthcheck')
   getHello(): string {
-    return 'alive';
+    return 'server is alive!';
   }
 }
