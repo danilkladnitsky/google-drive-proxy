@@ -3,6 +3,7 @@ version: "3"
 services:
   database:
     image: postgres:14.3-alpine
+    container_name: database
     volumes:
       - ./database:/var/lib/postgresql/data
     ports:
@@ -14,6 +15,7 @@ services:
       - "./.env"
 
   backend:
+    container_name: backend
     build:
       context: ./backend
       dockerfile: Dockerfile
