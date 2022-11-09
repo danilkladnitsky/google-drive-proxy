@@ -1,35 +1,16 @@
-import {
-  Controller,
-  Get,
-  HttpException,
-  HttpStatus,
-  Query,
-} from '@nestjs/common';
-import { google } from 'googleapis';
-import { OAUTH_SCOPE } from 'src/common/const/oAuth.const';
+import { Controller, Get, Query, UnauthorizedException } from '@nestjs/common';
+import { GoogleAuthProvider } from 'src/providers/google/google.provider';
 import { AuthService } from './auth.service';
-
-const client_id = process.env.GOOGLE_CLIENT_ID;
-const client_secret = process.env.GOOGLE_CLIENT_SECRET;
-const redirect_uri = process.env.GOOGLE_REDIRECT_URI_DEV;
 
 @Controller('auth')
 export class AuthController {
-  oAuthClient: any;
-  constructor(private authService: AuthService) {
-    this.oAuthClient = new google.auth.OAuth2(
-      client_id,
-      client_secret,
-      redirect_uri,
-    );
-  }
-
+  constructor(
+    private readonly authService: AuthService,
+    private readonly authProvider: GoogleAuthProvider,
+  ) {}
   @Get('link')
-  getAuthLink(): { link: string } {
-    const link = this.oAuthClient.generateAuthUrl({
-      access_type: 'offline',
-      scope: OAUTH_SCOPE,
-    }) as string;
+  async getAuthLink(): Promise<{ link: string }> {
+    const link = await this.authProvider.generateLoginLink();
 
     return { link };
   }
@@ -37,28 +18,16 @@ export class AuthController {
   @Get('token')
   async getToken(@Query('code') code: string) {
     try {
-      const {
-        tokens: { access_token },
-      } = await this.oAuthClient.getToken(code);
+      const token = await this.authProvider.getUserToken(code);
+      const userEntity = await this.authProvider.retrieveUserByToken(token);
 
-      await this.oAuthClient.setCredentials({
-        access_token,
-      });
-      const oAuth = google.oauth2({ version: 'v2', auth: this.oAuthClient });
-
-      const { data } = await oAuth.userinfo.get();
-
-      await this.authService.createClient(data, access_token);
+      await this.authService.createClient(userEntity, token);
 
       // TODO: redirect to the frontend
       return 'Авторизация прошла успешно';
     } catch (error) {
       console.log(error);
-
-      throw new HttpException(
-        'Авторизация через Google не прошла',
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new UnauthorizedException();
     }
   }
 }
