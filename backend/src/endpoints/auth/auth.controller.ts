@@ -1,4 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Query,
+} from '@nestjs/common';
 import { google } from 'googleapis';
 import { OAUTH_SCOPE } from 'src/common/const/oAuth.const';
 import { AuthService } from './auth.service';
@@ -30,12 +36,29 @@ export class AuthController {
 
   @Get('token')
   async getToken(@Query('code') code: string) {
-    console.log(code);
+    try {
+      const {
+        tokens: { access_token },
+      } = await this.oAuthClient.getToken(code);
 
-    const {
-      tokens: { access_token },
-    } = await this.oAuthClient.getToken(code);
+      await this.oAuthClient.setCredentials({
+        access_token,
+      });
+      const oAuth = google.oauth2({ version: 'v2', auth: this.oAuthClient });
 
-    return { access_token };
+      const { data } = await oAuth.userinfo.get();
+
+      await this.authService.createClient(data, access_token);
+
+      // TODO: redirect to the frontend
+      return 'Авторизация прошла успешно';
+    } catch (error) {
+      console.log(error);
+
+      throw new HttpException(
+        'Авторизация через Google не прошла',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
   }
 }
