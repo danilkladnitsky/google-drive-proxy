@@ -1,5 +1,5 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { User } from 'src/common/decorators/user.decorator';
+import { UserId } from 'src/common/decorators/user.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { StorageService } from './storage.service';
 
@@ -9,7 +9,7 @@ export class StorageController {
 
   @Get('files/:folderName?')
   @UseGuards(AuthGuard)
-  getFiles(@Param('folderName') folderName: string) {
-    return folderName;
+  getFiles(@UserId() userId, @Param('folderName') folderName: string) {
+    return userId;
   }
 }

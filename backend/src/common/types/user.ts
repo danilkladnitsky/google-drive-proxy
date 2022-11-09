@@ -6,3 +6,10 @@ export type GoogleDriveUserDTO = {
   picture?: string;
   locale?: string;
 };
+
+export type UserWithTokenDTO = {
+  token: string;
+  googleId: string;
+  name: string;
+  picture?: string;
+};
