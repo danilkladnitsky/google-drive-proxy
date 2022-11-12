@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Client } from 'src/database/models/client.entity';
 import { StorageAuthModule } from 'src/providers/storageAuth/storageAuth.module';
+import { DriveManagerModule } from 'src/providers/storageManagers/drive/driveManager.module';
 import { UserService } from '../user/user.service';
 import { StorageController } from './storage.controller';
 import { StorageService } from './storage.service';
@@ -9,6 +10,10 @@ import { StorageService } from './storage.service';
 @Module({
   providers: [StorageService, UserService],
   controllers: [StorageController],
-  imports: [TypeOrmModule.forFeature([Client]), StorageAuthModule],
+  imports: [
+    TypeOrmModule.forFeature([Client]),
+    StorageAuthModule,
+    DriveManagerModule,
+  ],
 })
 export class StorageModule {}

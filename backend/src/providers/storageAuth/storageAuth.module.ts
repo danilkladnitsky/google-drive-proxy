@@ -5,5 +5,6 @@ import { StorageAuthService } from './storageAuth.service';
 @Module({
   providers: [StorageAuthService],
   imports: [DriveManagerModule],
+  exports: [StorageAuthService],
 })
 export class StorageAuthModule {}

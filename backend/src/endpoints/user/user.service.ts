@@ -14,4 +14,19 @@ export class UserService {
   async getUserById(id: number) {
     return await this.clientRepository.findOneBy({ id });
   }
+
+  async getUsers() {
+    return await this.clientRepository.find();
+  }
+
+  async deleteUser(id: number) {
+    try {
+      await this.clientRepository.delete(id);
+      return 'ok';
+    } catch (error) {
+      console.log(error);
+
+      return 'error';
+    }
+  }
 }

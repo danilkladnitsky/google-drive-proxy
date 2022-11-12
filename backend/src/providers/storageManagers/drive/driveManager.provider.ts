@@ -7,6 +7,7 @@ import {
 } from 'src/common/const/google.const';
 import { OAUTH_SCOPE } from 'src/common/const/oAuth.const';
 import { IStorageAuthProvider } from 'src/common/interfaces/storage';
+import { MimeType } from 'src/common/types/storage';
 import { GoogleDriveUserDTO } from 'src/common/types/user';
 
 @Injectable()
@@ -51,5 +52,23 @@ export class DriveManagerProvider
     const { data } = await oAuth.userinfo.get();
 
     return data as GoogleDriveUserDTO;
+  }
+
+  async readFiles(access_token: string) {
+    this.oAuthClient.setCredentials({ access_token });
+    const drive = google.drive({ version: 'v3', auth: this.oAuthClient });
+    return (await drive.files.list()).data.files;
+  }
+
+  async createFolder(access_token: string, folder: string): Promise<string> {
+    this.oAuthClient.setCredentials({ access_token });
+    const drive = google.drive({ version: 'v3', auth: this.oAuthClient });
+
+    const file = await drive.files.create({
+      fields: 'id',
+      requestBody: { name: folder, mimeType: MimeType.FOLDER },
+    });
+
+    return file.data.id;
   }
 }
