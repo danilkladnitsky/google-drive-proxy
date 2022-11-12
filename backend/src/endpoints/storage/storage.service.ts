@@ -1,7 +1,9 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { Client } from 'src/database/models/client.entity';
-import { Repository } from 'typeorm';
+import { UserService } from '../user/user.service';
 
 export class StorageService {
-  constructor(@InjectRepository(Client) clientRepository: Repository<Client>) {}
+  constructor(private readonly userService: UserService) {}
+
+  async getFiles(userId: number, folderName: string) {
+    const user = await this.userService.getUserById(userId);
+  }
 }

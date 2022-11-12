@@ -4,13 +4,15 @@ import {
   ExceptionFilter,
   ForbiddenException,
 } from '@nestjs/common';
-import { GoogleAuthProvider } from 'src/providers/google/google.provider';
+import { IStorageAuthProvider } from '../interfaces/storage';
+import { UserAuthDTO } from '../types/user';
 
 @Catch(ForbiddenException)
 export class AuthFilter implements ExceptionFilter {
-  authProvider: GoogleAuthProvider;
-  constructor() {
-    this.authProvider = new GoogleAuthProvider();
+  constructor(
+    private readonly authProvider: IStorageAuthProvider<UserAuthDTO>,
+  ) {
+    this.authProvider = authProvider;
   }
   async catch(exception: ForbiddenException, host: ArgumentsHost) {
     const link = await this.authProvider.generateLoginLink();

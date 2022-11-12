@@ -7,5 +7,5 @@ export class UserDTO {
   @Expose()
   name: string;
   @Expose()
-  picture: string;
+  picture?: string;
 }

@@ -1,14 +1,13 @@
 import { Controller, Get, Query, UnauthorizedException } from '@nestjs/common';
-import { GoogleAuthProvider } from 'src/providers/google/google.provider';
+import { UserAuthDTO } from 'src/common/types/user';
+import { StorageAuthService } from 'src/providers/storageAuth/storageAuth.service';
 import { UserService } from '../user/user.service';
-import { AuthService } from './auth.service';
 
 @Controller('auth')
-export class AuthController {
+export class AuthController<U extends UserAuthDTO> {
   constructor(
-    private readonly authService: AuthService,
     private readonly userService: UserService,
-    private readonly authProvider: GoogleAuthProvider,
+    private readonly authProvider: StorageAuthService<U>,
   ) {}
   @Get('link')
   async getAuthLink(): Promise<{ link: string }> {

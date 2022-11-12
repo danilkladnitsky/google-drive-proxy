@@ -1,6 +1,6 @@
 export type GoogleDriveUserDTO = {
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
   given_name?: string;
   family_name?: string;
   picture?: string;
@@ -13,3 +13,8 @@ export type UserWithTokenDTO = {
   name: string;
   picture?: string;
 };
+
+export type UserAuthDTO = {
+  id: string;
+  name: string;
+} & { [key: string]: string };

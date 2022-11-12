@@ -9,7 +9,10 @@ export class StorageController {
 
   @Get('files/:folderName?')
   @UseGuards(AuthGuard)
-  getFiles(@UserId() userId, @Param('folderName') folderName: string) {
+  async getFiles(@UserId() userId, @Param('folderName') folderName: string) {
+    const files = await this.service.getFiles(userId, folderName);
+    console.log(files);
+
     return userId;
   }
 }
