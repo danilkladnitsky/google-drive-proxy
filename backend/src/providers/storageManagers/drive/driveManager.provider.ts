@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { drive_v3, google } from 'googleapis';
-import { APP_DRIVE_FOLDER } from 'src/common/const/app.const';
 import {
   google_client_id,
   google_client_secret,
