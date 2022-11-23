@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { google } from 'googleapis';
+import { drive_v3, google } from 'googleapis';
 import {
   google_client_id,
   google_client_secret,
@@ -54,15 +54,24 @@ export class DriveManagerProvider
     return data as GoogleDriveUserDTO;
   }
 
-  async readFiles(access_token: string) {
-    this.oAuthClient.setCredentials({ access_token });
-    const drive = google.drive({ version: 'v3', auth: this.oAuthClient });
-    return (await drive.files.list()).data.files;
+  async readFiles(access_token: string, folderId: string) {
+    const drive = await this.getDriveClient(access_token);
+
+    return (
+      await drive.files.list({ q: folderId ? `"${folderId}" in parents` : '' })
+    ).data.files;
+  }
+
+  async shareFile(access_token: string, fileId: string) {
+    const drive = await this.getDriveClient(access_token);
+
+    const copiedFileId = await drive.files.copy({ fileId });
+
+    return copiedFileId.data.id;
   }
 
   async createFolder(access_token: string, folder: string): Promise<string> {
-    this.oAuthClient.setCredentials({ access_token });
-    const drive = google.drive({ version: 'v3', auth: this.oAuthClient });
+    const drive = await this.getDriveClient(access_token);
 
     const file = await drive.files.create({
       fields: 'id',
@@ -70,5 +79,12 @@ export class DriveManagerProvider
     });
 
     return file.data.id;
+  }
+
+  async getDriveClient(access_token: string): Promise<drive_v3.Drive> {
+    this.oAuthClient.setCredentials({ access_token });
+    const drive = google.drive({ version: 'v3', auth: this.oAuthClient });
+
+    return drive;
   }
 }

@@ -14,12 +14,18 @@ export class StorageService {
   async getFiles(userId: number, folderName: string) {
     const user = await this.userService.getUserById(userId);
 
-    return this.storage.readFiles(user.token);
+    return this.storage.readFiles(user.token, folderName);
   }
 
   async createFolder(userId: number, folderName: string) {
     const user = await this.userService.getUserById(userId);
 
     return this.storage.createFolder(user.token, folderName);
+  }
+
+  async shareFile(userId: number, fileId: string) {
+    const user = await this.userService.getUserById(userId);
+
+    return this.storage.shareFile(user.token, fileId);
   }
 }

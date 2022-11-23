@@ -1,1 +1,1 @@
-export const APP_DRIVE_FOLDER = 'proxy-folder';
+export const APP_DRIVE_FOLDER = 'proxy-folder-files';
