@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { drive_v3, google } from 'googleapis';
+import { APP_DRIVE_FOLDER } from 'src/common/const/app.const';
 import {
   google_client_id,
   google_client_secret,
@@ -64,10 +65,30 @@ export class DriveManagerProvider
 
   async shareFile(access_token: string, fileId: string) {
     const drive = await this.getDriveClient(access_token);
+    // const copiedFileId = await drive.files.copy({ fileId });
 
-    const copiedFileId = await drive.files.copy({ fileId });
+    return this.generatePublicUrl(access_token, fileId);
+  }
 
-    return copiedFileId.data.id;
+  async generatePublicUrl(
+    access_token: string,
+    fileId: string,
+  ): Promise<string> {
+    const drive = await this.getDriveClient(access_token);
+    await drive.permissions.create({
+      fileId,
+      requestBody: {
+        role: 'reader',
+        type: 'anyone',
+      },
+    });
+
+    const result = await drive.files.get({
+      fileId,
+      fields: 'webViewLink, webContentLink',
+    });
+
+    return result.data.webViewLink;
   }
 
   async createFolder(access_token: string, folder: string): Promise<string> {

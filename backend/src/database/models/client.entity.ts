@@ -10,7 +10,7 @@ export class Client extends BaseEntity {
   @OneToMany(() => File, (file) => file.client)
   files: File[];
 
-  @Column()
+  @Column({ unique: true })
   googleId: string;
 
   @Column()
