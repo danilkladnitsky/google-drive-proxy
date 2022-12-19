@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Medium';
+  src: url('/fonts/MontserratAlternates-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Semibold';
+  src: url('/fonts/MontserratAlternates-SemiBold.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-family: Medium;
+  font-size: 14px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}

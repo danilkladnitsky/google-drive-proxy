@@ -54,19 +54,52 @@ export class DriveManagerProvider
     return data as GoogleDriveUserDTO;
   }
 
-  async readFiles(access_token: string, folderId: string) {
+  async readFiles(
+    access_token: string,
+    folderId: string,
+    excludeMimeType: MimeType,
+  ) {
     const drive = await this.getDriveClient(access_token);
 
+    const query = [];
+
+    if (folderId) {
+      query.push(`"${folderId}" in parents and`);
+    }
+
+    if (excludeMimeType) {
+      query.push(`mimeType != "${excludeMimeType}"`);
+    }
+
     return (
-      await drive.files.list({ q: folderId ? `"${folderId}" in parents` : '' })
+      await drive.files.list({
+        q: query.join(' '),
+      })
     ).data.files;
   }
 
   async shareFile(access_token: string, fileId: string) {
     const drive = await this.getDriveClient(access_token);
+
+    const permission = {
+      type: 'anyone',
+      role: 'reader',
+    };
+
+    await drive.permissions.create({
+      fileId: fileId,
+      requestBody: permission,
+    });
+
     // const copiedFileId = await drive.files.copy({ fileId });
 
     return this.generatePublicUrl(access_token, fileId);
+  }
+
+  async copyFile(access_token: string, fileId: string): Promise<string> {
+    const drive = await this.getDriveClient(access_token);
+
+    return (await drive.files.copy({ fileId })).data.id;
   }
 
   async generatePublicUrl(
@@ -103,8 +136,6 @@ export class DriveManagerProvider
 
   async getDriveClient(access_token: string): Promise<drive_v3.Drive> {
     this.oAuthClient.setCredentials({ access_token });
-    const drive = google.drive({ version: 'v3', auth: this.oAuthClient });
-
-    return drive;
+    return google.drive({ version: 'v3', auth: this.oAuthClient });
   }
 }

@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { UserId } from 'src/common/decorators/user.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { MimeType } from 'src/common/types/storage';
 import { StorageService } from './storage.service';
 
 @Controller('storage')
@@ -9,8 +10,12 @@ export class StorageController {
   constructor(private service: StorageService) {}
 
   @Get('files')
-  async getFiles(@UserId() userId, @Query('folder') folderId: string) {
-    return await this.service.getFiles(userId, folderId);
+  async getFiles(
+    @UserId() userId,
+    @Query('folder') folderId: string,
+    @Query('mimeType') mimeType: MimeType,
+  ) {
+    return await this.service.getFiles(userId, folderId, mimeType);
   }
 
   @Post('folder')

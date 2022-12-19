@@ -3,13 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { configService } from './config/typeorm.config';
 import { AuthModule } from './endpoints/auth/auth.module';
+import { LinkModule } from './endpoints/link/link.module';
 import { StorageModule } from './endpoints/storage/storage.module';
 import { UserModule } from './endpoints/user/user.module';
 
 const DatabaseModule = TypeOrmModule.forRoot(configService.getTypeOrmConfig());
 
 @Module({
-  imports: [DatabaseModule, StorageModule, AuthModule, UserModule],
+  imports: [DatabaseModule, StorageModule, AuthModule, UserModule, LinkModule],
   controllers: [AppController],
 })
 export class AppModule {}

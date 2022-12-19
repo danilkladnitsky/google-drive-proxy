@@ -1,11 +1,13 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { File } from './file.entity';
 
 @Entity()
 export class Link extends BaseEntity {
   @Column()
   link: string;
 
-  @Column()
-  downloads: number;
+  @OneToOne(() => File, (file) => file.driveLink)
+  @JoinColumn()
+  file: File;
 }

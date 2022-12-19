@@ -27,7 +27,7 @@ USER node
 
 FROM node:18-alpine As build
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/backend
 
 COPY --chown=node:node package*.json ./
 
@@ -35,7 +35,7 @@ COPY --chown=node:node package*.json ./
 # The Nest CLI is a dev dependency,
 # In the previous development stage we ran `npm ci` which installed all dependencies.
 # So we can copy over the node_modules directory from the development image into this build image.
-COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=development /usr/src/backend/node_modules ./node_modules
 
 COPY --chown=node:node . .
 
@@ -59,8 +59,8 @@ USER node
 FROM node:18-alpine As production
 
 # Copy the bundled code from the build stage to the production image
-COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /usr/src/backend/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/backend/dist ./dist
 
 # Start the server using the production build
 CMD [ "node", "dist/main.js" ]

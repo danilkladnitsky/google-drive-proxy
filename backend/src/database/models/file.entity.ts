@@ -1,17 +1,19 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { Client } from './client.entity';
-import { Link } from './link.entity';
+import { RootFile } from './root.file.entity';
 
 @Entity()
 export class File extends BaseEntity {
   @Column()
   driveId: string;
 
-  @ManyToOne(() => Client, (client) => client.id)
-  client: Client;
+  @Column({ nullable: false })
+  driveLink: string;
 
-  @OneToOne(() => Link, (link) => link.id)
+  @Column({ default: 0 })
+  downloads: number;
+
+  @ManyToOne(() => RootFile, (rootFile) => rootFile.id)
   @JoinColumn()
-  link: Link;
+  rootFile: RootFile;
 }
