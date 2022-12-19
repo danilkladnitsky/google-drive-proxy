@@ -11,21 +11,21 @@ jobs:
       - uses: actions/checkout@v2
 
   create-env-file:
-  runs-on: self-hosted
-  needs: clean-repo
-  steps:
-    - uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-        envkey_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        envkey_GOOGLE_REDIRECT_URI_DEV: ${{ secrets.GOOGLE_REDIRECT_URI_DEV }}
-        envkey_JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
-        envkey_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        envkey_POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-        envkey_POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
-        file_name: .env
-        fail_on_empty: false
+    runs-on: self-hosted
+    needs: clean-repo
+    steps:
+      - uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          envkey_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          envkey_GOOGLE_REDIRECT_URI_DEV: ${{ secrets.GOOGLE_REDIRECT_URI_DEV }}
+          envkey_JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+          envkey_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          envkey_POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          envkey_POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+          file_name: .env
+          fail_on_empty: false
 
   deploy-bot:
     runs-on: self-hosted
