@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Link } from 'src/database/models/link.entity';
 import { Repository } from 'typeorm';
@@ -37,7 +37,7 @@ export class LinkService {
     const matchedFile = file[0];
 
     if (!file) {
-      return;
+      throw new NotFoundException('Такого файла нет');
     }
 
     const { update_date, downloads } = matchedFile;

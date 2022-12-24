@@ -55,7 +55,7 @@ export class StorageService {
         where: { file: { id: copiedFile.id } },
       });
 
-      return { link: link[0].link };
+      return link[0].link;
     }
 
     const owner = await this.userService.getUserById(userId);
@@ -88,6 +88,14 @@ export class StorageService {
       link: generatedUrl,
     });
 
-    return { link: link.link };
+    return link.link;
+  }
+
+  async getSharedFiles() {
+    return await this.fileRepository.find();
+  }
+
+  async getLinks() {
+    return await this.linkRepository.find();
   }
 }

@@ -1,0 +1,35 @@
+.list {
+  height: 100%;
+  width: 100%;
+
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+.files {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.file {
+  width: 250px;
+
+  svg {
+    height: 50px;
+  }
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.qr {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}

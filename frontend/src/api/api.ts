@@ -6,25 +6,44 @@ export const REQUESTS = {
     GET_LINK: "/auth/link",
     GET_TOKEN: "/auth/token",
   },
+  STORAGE: {
+    FILES: "/storage/files",
+    SHARE_FILE: "/storage/share",
+    GET_SHARED_FILES: "/storage/shared-files",
+    GET_LINKS: "/storage/links",
+  },
 };
 
 type Methods = "POST" | "GET";
 
 type Payload = {
   query?: Record<string, string>;
-  body?: Record<string, string>;
+  body?: FormData;
 };
 
-const _fetch = async <T>(
+export const _fetch = async <T>(
   req: string,
   method?: Methods,
   payload?: Payload
 ): Promise<T | undefined> => {
   const query = new URLSearchParams(payload?.query);
 
+  const headers: Record<string, string> = {};
+
+  const id = localStorage.getItem("id");
+
+  if (id) {
+    headers["X-USER-ID"] = id;
+  }
+
+  if (payload?.body) {
+    headers["Content-type"] = "multipart/form-data";
+  }
+
   const result = await fetch(req + "?" + query, {
     method: method || "GET",
-    body: JSON.stringify(payload?.body),
+    body: payload?.body,
+    headers: { ...headers },
   });
 
   if (!result.ok) {
@@ -59,4 +78,29 @@ export const getUserEntity = async (code: string) => {
   );
 
   return result;
+};
+
+export const getFiles = async (folder?: string) => {
+  return await _fetch<{ id: string; name: string; mimeType: string }[]>(
+    REQUESTS.STORAGE.FILES,
+    "GET",
+    folder
+      ? {
+          query: { folder },
+        }
+      : {}
+  );
+};
+
+export const getSharedFiles = async () => {
+  return await _fetch<
+    { driveId: string; downloads: number; id: number; driveLink: string }[]
+  >(REQUESTS.STORAGE.GET_SHARED_FILES, "GET");
+};
+
+export const getLinks = async () => {
+  return await _fetch<{ id: number; link: string }[]>(
+    REQUESTS.STORAGE.GET_LINKS,
+    "GET"
+  );
 };

@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { UserId } from 'src/common/decorators/user.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { MimeType } from 'src/common/types/storage';
@@ -23,8 +32,28 @@ export class StorageController {
     return await this.service.createFolder(userId, folderName);
   }
 
-  @Post('share')
-  async copyFile(@UserId() userId, @Body('fileId') fileId: string) {
-    return await this.service.shareFile(userId, fileId);
+  @Post('share/:fileId')
+  async copyFile(@UserId() userId, @Param('fileId') fileId: string) {
+    if (!fileId) {
+      throw new BadRequestException(`${fileId} is not set`);
+    }
+
+    const link = await this.service.shareFile(userId, fileId);
+    return { link: `${process.env.BACKEND_URL}link/${link}` };
+  }
+
+  @Get('shared-files')
+  async getSharedFiles() {
+    return await this.service.getSharedFiles();
+  }
+
+  @Get('links')
+  async geSharedtLinks() {
+    const links = await this.service.getLinks();
+
+    return links.map((link) => ({
+      ...link,
+      link: `${process.env.BACKEND_URL}link/${link.link}`,
+    }));
   }
 }

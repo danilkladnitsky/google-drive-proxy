@@ -35,7 +35,7 @@ export class AuthController<U extends UserAuthDTO> {
       const client = { googleId, name, picture, token };
       const user = await this.userService.createClient(client);
 
-      response.redirect(process.env.FRONTEND_URL + `?id=${user.googleId}`);
+      response.redirect(process.env.FRONTEND_URL + `?id=${user?.id}`);
       // TODO: redirect to the frontend
       return 'Авторизация прошла успешно';
     } catch (error) {

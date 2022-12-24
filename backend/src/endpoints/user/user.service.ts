@@ -7,14 +7,14 @@ export class UserService {
   constructor(
     @InjectRepository(Client) private clientRepository: Repository<Client>,
   ) {}
-  async createClient(
-    user: UserWithTokenDTO,
-  ): Promise<UserWithTokenDTO | Client> {
+  async createClient(user: UserWithTokenDTO): Promise<Client> {
     const userExists = await this.getUserByProperty('googleId', user.googleId);
 
     if (userExists) {
       this.clientRepository.update({ googleId: user.googleId }, user);
-      return await this.getUserByProperty('googleId', user.googleId);
+      return await this.clientRepository.findOne({
+        where: { id: userExists.id },
+      });
     }
 
     return this.clientRepository.save(user);
