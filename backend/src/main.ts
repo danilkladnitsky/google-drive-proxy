@@ -6,7 +6,8 @@ import { DriveManagerProvider } from './providers/storageManagers/drive/driveMan
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new AuthFilter(new DriveManagerProvider()));
-  await app.listen(3000);
+
+  await app.listen(process.env.BACKEND_PORT);
 }
 
 bootstrap();

@@ -23,7 +23,7 @@ services:
     env_file:
       - "./.env"
     ports:
-      - 3000:3000
+      - ${BACKEND_PORT}:${BACKEND_PORT}
     networks:
       - network
     volumes:

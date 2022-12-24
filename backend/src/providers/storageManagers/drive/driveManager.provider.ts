@@ -28,8 +28,14 @@ export class DriveManagerProvider
     return this.oAuthClient;
   }
 
-  async generateLoginLink(): Promise<string> {
-    return this.oAuthClient.generateAuthUrl({
+  async generateLoginLink(redirectUri: string): Promise<string> {
+    const client = new google.auth.OAuth2(
+      google_client_id,
+      google_client_secret,
+      redirectUri || google_redirect_uri,
+    );
+
+    return client.generateAuthUrl({
       access_type: 'offline',
       scope: OAUTH_SCOPE,
     }) as string;
@@ -47,6 +53,7 @@ export class DriveManagerProvider
     await this.oAuthClient.setCredentials({
       access_token,
     });
+
     const oAuth = google.oauth2({ version: 'v2', auth: this.oAuthClient });
 
     const { data } = await oAuth.userinfo.get();

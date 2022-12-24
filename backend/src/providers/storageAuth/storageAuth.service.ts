@@ -12,8 +12,8 @@ export class StorageAuthService<U extends UserAuthDTO> {
     private readonly authProvider: IStorageAuthProvider<U>,
   ) {}
 
-  async generateLoginLink(): Promise<string> {
-    return this.authProvider.generateLoginLink();
+  async generateLoginLink(redirectUri: string): Promise<string> {
+    return this.authProvider.generateLoginLink(redirectUri);
   }
 
   async getUserToken(code: string): Promise<string> {

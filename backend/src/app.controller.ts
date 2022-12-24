@@ -3,7 +3,7 @@ import { Controller, Get } from '@nestjs/common';
 @Controller()
 export class AppController {
   @Get('healthcheck')
-  getHello(): string {
-    return 'server is alive!';
+  getHello() {
+    return { message: 'server is alive!' };
   }
 }
