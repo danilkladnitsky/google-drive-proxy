@@ -37,7 +37,7 @@ services:
     env_file:
       - "./.env"
     ports:
-      - 3000:3000
+      - 3000:80
     networks:
       - network
     container_name: frontend
