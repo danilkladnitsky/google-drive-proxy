@@ -5,7 +5,7 @@ services:
     image: postgres:14.3-alpine
     container_name: database
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - /volumes/database:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:
@@ -27,7 +27,7 @@ services:
     networks:
       - network
     volumes:
-      - ./backend:/usr/src/backend
+      - /volumes/backend:/usr/src/backend
     command: npm run start
     depends_on:
       - database
