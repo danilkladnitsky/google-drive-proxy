@@ -1,16 +1,16 @@
 export const REQUESTS = {
   SERVER: {
-    PING: "/healthcheck",
+    PING: "/api/healthcheck",
   },
   AUTH: {
-    GET_LINK: "/auth/link",
-    GET_TOKEN: "/auth/token",
+    GET_LINK: "/api/auth/link",
+    GET_TOKEN: "/api/auth/token",
   },
   STORAGE: {
-    FILES: "/storage/files",
-    SHARE_FILE: "/storage/share",
-    GET_SHARED_FILES: "/storage/shared-files",
-    GET_LINKS: "/storage/links",
+    FILES: "/api/storage/files",
+    SHARE_FILE: "/api/storage/share",
+    GET_SHARED_FILES: "/api/storage/shared-files",
+    GET_LINKS: "/api/storage/links",
   },
 };
 
