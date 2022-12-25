@@ -39,7 +39,7 @@ export class StorageController {
     }
 
     const link = await this.service.shareFile(userId, fileId);
-    return { link: `${process.env.BACKEND_URL}link/${link}` };
+    return { link: `${process.env.BACKEND_URL}api/link/${link}` };
   }
 
   @Get('shared-files')
@@ -53,7 +53,7 @@ export class StorageController {
 
     return links.map((link) => ({
       ...link,
-      link: `${process.env.BACKEND_URL}link/${link.link}`,
+      link: `${process.env.BACKEND_URL}api/link/${link.link}`,
     }));
   }
 }
