@@ -62,8 +62,6 @@ export const DashboardPage = () => {
     refetchFileList();
     refetchLinks();
     refetchSharedFiles();
-
-    setTimeout(() => setSharedLinkIsVisible(false), 5000);
   }, [sharedLink]);
 
   if (sharedLinkIsVisible) {
@@ -95,10 +93,19 @@ export const DashboardPage = () => {
     return <SpinLoader title="Шэйрим файл..." />;
   }
 
+  const exit = () => {
+    localStorage.clear();
+    window.location.href = "/";
+  };
+
   return (
     <div className={styles.list}>
-      <h2>Мои файлы</h2>
-
+      <div className={styles.menu}>
+        <h2>Мои файлы</h2>
+        <Button type="dashed" onClick={exit}>
+          Выйти
+        </Button>
+      </div>
       <div className={styles.files}>
         {files?.map((file) => {
           const sharedFile = sharedFiles?.find((f) => f.driveId === file.id);

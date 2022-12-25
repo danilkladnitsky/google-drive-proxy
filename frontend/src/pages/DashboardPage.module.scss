@@ -1,8 +1,9 @@
 .list {
   height: 100%;
-  width: 100%;
+  max-width: 1200px;
 
   padding: 25px;
+  padding-top: 40px;
   box-sizing: border-box;
 }
 
@@ -32,4 +33,11 @@ h2 {
   flex-direction: column;
   justify-content: center;
   gap: 16px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
