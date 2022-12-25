@@ -37,10 +37,10 @@
     "rxjs": "7.2.0",
     "typeorm": "^0.3.10",
     "uuid": "^9.0.0",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "@nestjs/cli": "9.0.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "9.0.0",
     "@nestjs/schematics": "9.0.0",
     "@nestjs/testing": "9.0.0",
     "@types/express": "4.17.13",
