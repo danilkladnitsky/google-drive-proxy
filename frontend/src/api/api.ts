@@ -62,7 +62,9 @@ export const pingServer = async () => {
 
 export const getAuthLink = async () => {
   const result = await _fetch<{ link: string }>(REQUESTS.AUTH.GET_LINK, "GET", {
-    query: { redirectUri: "http://localhost:4000/auth/token" },
+    query: {
+      redirectUri: "http://google-drive-proxy.kladnitsky.ru/auth/token",
+    },
   });
 
   return result?.link;
