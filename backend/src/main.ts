@@ -4,7 +4,7 @@ import { AuthFilter } from './common/filter/auth.filter';
 import { DriveManagerProvider } from './providers/storageManagers/drive/driveManager.provider';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: false });
   app.useGlobalFilters(new AuthFilter(new DriveManagerProvider()));
 
   await app.listen(process.env.BACKEND_PORT);

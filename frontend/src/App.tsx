@@ -18,7 +18,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AppProvider>
         <ServerGuard>
-          <BrowserRouter basename="">
+          <BrowserRouter basename=".">
             <Routes>
               <Route
                 path="/"
