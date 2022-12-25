@@ -26,8 +26,6 @@ services:
       - ${BACKEND_PORT}:${BACKEND_PORT}
     networks:
       - network
-    volumes:
-      - /volumes/backend:/usr/src/backend
     command: npm run start
     depends_on:
       - database
@@ -41,6 +39,7 @@ services:
       - 3000:3000
     networks:
       - network
+    container_name: frontend
 
 networks:
   network:
