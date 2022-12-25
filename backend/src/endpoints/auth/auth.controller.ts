@@ -28,16 +28,17 @@ export class AuthController<U extends UserAuthDTO> {
   @Get('token')
   async getToken(@Query('code') code: string, @Res() response: Response) {
     try {
+      console.log(code);
+
       const token = await this.authProvider.getUserToken(code);
       const userEntity = await this.authProvider.retrieveUserByToken(token);
 
       const { id: googleId, name, picture } = userEntity;
       const client = { googleId, name, picture, token };
       const user = await this.userService.createClient(client);
+      console.log(process.env.FRONTEND_URL);
 
       response.redirect(process.env.FRONTEND_URL + `?id=${user?.id}`);
-      // TODO: redirect to the frontend
-      return 'Авторизация прошла успешно';
     } catch (error) {
       console.log(error);
       throw new UnauthorizedException();
