@@ -36,12 +36,12 @@ jobs:
     needs: create-env-file
     steps:
       - name: Stop running services
-        run: docker compose -f docker-compose.production.yml --env-file /home/partnadem/secrets/.env down
+        run: docker compose -f docker-compose.production.yml --env-file .env down
       - name: Pull latest services
         run: docker compose -f docker-compose.production.yml pull
       - name: Build services
-        run: docker compose -f docker-compose.production.yml --env-file /home/partnadem/secrets/.env build
+        run: docker compose -f docker-compose.production.yml --env-file .env build
       - name: Run services
-        run: docker compose -f docker-compose.production.yml --env-file /home/partnadem/secrets/.env up -d
+        run: docker compose -f docker-compose.production.yml --env-file .env up -d
       - name: Status
         run: docker ps -a
