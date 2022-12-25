@@ -51,7 +51,7 @@ export const ServerGuard: FC<Props> = ({ children }) => {
               <Progress
                 percent={(failureCount * 100) / MAX_RETRY_ATTEMPTS}
                 size="small"
-                status="exception"
+                status={failureCount ? "exception" : "normal"}
               />
             </div>
           }
