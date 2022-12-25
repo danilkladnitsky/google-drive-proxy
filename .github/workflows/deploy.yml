@@ -25,6 +25,9 @@ jobs:
           envkey_POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
           envkey_POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
           envkey_POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          envkey_BACKEND_PORT: ${{secrets.BACKEND_PORT}}
+          envkey_BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          envkey_FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
           file_name: .env
           fail_on_empty: false
 
