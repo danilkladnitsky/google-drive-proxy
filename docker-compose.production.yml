@@ -29,6 +29,7 @@ services:
     command: npm run start
     depends_on:
       - database
+    user: root
 
   frontend:
     build:
