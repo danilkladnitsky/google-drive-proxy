@@ -67,5 +67,9 @@ export class LinkService {
 
     // limit is about to be reached
     // need to copy file and share new link
+    return await this.storageService.shareFile(
+      matchedFile.rootFile.owner.id,
+      matchedFile.rootFile.driveId,
+    );
   }
 }

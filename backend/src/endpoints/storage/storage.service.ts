@@ -98,4 +98,9 @@ export class StorageService {
   async getLinks() {
     return await this.linkRepository.find();
   }
+
+  async copyFile(userId: number, fileId: string): Promise<string> {
+    const owner = await this.userService.getUserById(userId);
+    return await this.storage.copyFile(owner.token, fileId);
+  }
 }
